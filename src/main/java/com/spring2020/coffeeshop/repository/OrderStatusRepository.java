@@ -1,7 +1,7 @@
 package com.spring2020.coffeeshop.repository;
 
 import com.spring2020.coffeeshop.domain.entity.OrderStatus;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderStatusRepository extends CrudRepository<OrderStatus, Integer> {
+public interface OrderStatusRepository extends JpaRepository<OrderStatus, Integer> {
 }

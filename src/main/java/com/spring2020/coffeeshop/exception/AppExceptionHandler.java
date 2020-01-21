@@ -31,6 +31,13 @@ public class AppExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(value = ResourceNotFoundException.class)
+    public ResponseEntity handleException(ResourceNotFoundException exception) {
+        logger.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ResponseBody
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity handleException(MethodArgumentNotValidException exception) {
         List<String> errorList = exception.getBindingResult().getAllErrors().stream()
