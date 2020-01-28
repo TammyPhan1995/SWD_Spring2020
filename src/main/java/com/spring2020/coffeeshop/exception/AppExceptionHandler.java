@@ -3,6 +3,7 @@ package com.spring2020.coffeeshop.exception;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -54,5 +55,17 @@ public class AppExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage()
                 .substring(exception.getMessage().indexOf(':') + 1));
     }
+
+    @ResponseBody
+    @ExceptionHandler(value = DataIntegrityViolationException.class)
+    public ResponseEntity handleException(DataIntegrityViolationException exception) {
+        logger.error(exception.getMessage());
+        if (exception.getRootCause() != null && exception.getRootCause().getMessage() != null
+                && exception.getRootCause().getMessage().contains("FK_Product_Category")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete this category");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
 
 }
